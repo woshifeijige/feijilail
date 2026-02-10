@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>11.19🍉合集</title>
+  <link href="https://web.sdk.qcloud.com/player/tcplayer/release/v4.2.1/tcplayer.min.css" rel="stylesheet" />
+  <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.2.1/libs/hls.min.0.13.2m.js"></script>
+  <script src="https://web.sdk.qcloud.com/player/tcplayer/release/v4.5.0/tcplayer.v4.5.0.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #e0f7ff, #ffffff);
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 32px;
+      font-weight: bold;
+      color: #111;
+      margin-bottom: 30px;
+    }
+
+    .video-block {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      margin-bottom: 30px;
+    }
+
+    .video-title {
+      display: block;
+      background: #0094ff;
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      text-align: left; /* 修改为靠左对齐 */
+    }
+
+    .video-title:hover {
+      background: #0079cc;
+    }
+
+    .tcplayer-container {
+      display: none;
+      width: 100%;
+      height: 580px;
+      max-width: 1080px;
+      margin: 20px auto;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .jump-btn {
+      display: none;
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background-color: #ff6a00;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .jump-btn:hover {
+      background-color: #e85c00;
+    }
+  </style>
+</head>
+<body>
+  <h1>2.10🍉合集</h1>
+  <div id="content">加载中...</div>
+
+  <script>
+    const players = [];
+    let currentPlayingIndex = null;
+
+    function getLocalData() {
+      return {
+        data_mp4: [
+          { title: "吃🍉#KTV #精神小妹 #打架 #撕逼", url: "http://aod.cos.tx.xmcdn.com/storages/c11b-audiofreehighqps/FF/58/GKwRIMANYIeSAB1O9wRo7fUJ.mp4" },
+          { title: "吃🍉 好闺蜜 扒你 #奶子 #露点 😘？", url: "http://aod.cos.tx.xmcdn.com/storages/26a6-audiofreehighqps/C6/6B/GKwRIMANYIf-ABwl2QRo7kVB.mp4" },
+          { title: "吃🍉 重口猎奇，厕所舔卫生巾🤮🤮.", url: "http://aod.cos.tx.xmcdn.com/storages/05ed-audiofreehighqps/F3/87/GKwRIDoNYIjaABXP2gRo7to3.mp4" },
+          { title: "吃🍉皒軍男娘 玩假吊 被 教官 吊起来打", url: "http://aod.cos.tx.xmcdn.com/storages/d613-audiofreehighqps/54/28/GAqhVp8NYIk-ACAAAARo7xHc.mp4" },
+          { title: "吃🍉牛逼,🐔🎱要被拽掉了！ ", url: "http://aod.cos.tx.xmcdn.com/storages/a646-audiofreehighqps/09/34/GKwRIW4NYImzAA_sngRo71Vx.mp4" },
+          { title: "吃🍉集美拉屎，好闺蜜 会发朋友圈 ！", url: "http://aod.cos.tx.xmcdn.com/storages/d8b6-audiofreehighqps/C1/43/GAqhg3wNYIoXAB8hpARo74Zu.mp4" },
+          { title: "吃🍉商k #ktv公主 养家好女孩！", url: "http://aod.cos.tx.xmcdn.com/storages/cc4b-audiofreehighqps/95/88/GAqhI8INYIpfACAAAARo76wy.mp4" },
+          { title: "吃🍉不嫌晦气嘛，臭逼在脸上？", url: "http://aod.cos.tx.xmcdn.com/storages/91d3-audiofreehighqps/78/1E/GAqhp50NYIqrACAAAARo78mt.mp4" },
+          { title: "吃🍉准备开拍", url: "http://aod.cos.tx.xmcdn.com/storages/49fe-audiofreehighqps/46/F0/GAqhp50NYIsDAB56egRo7_pi.mp4" },
+          { title: "吃🍉大姨这绝活😅棍子戳b ", url: "http://aod.cos.tx.xmcdn.com/storages/0b31-audiofreehighqps/9E/F2/GKwRIJENYIuXACAAAARo8Dvf.mp4" },
+        ],
+        btn_text: '加入吃瓜微信群',
+        btn_link: 'https://mp.weixin.qq.com/s/vUGpJ_loc38t4zkAd8Sbdg',
+        title: '转发＝更新的动力'
+      };
+    }
+
+    async function loadVideos() {
+      const data = getLocalData();
+      document.title = data.title;
+
+      const container = document.getElementById('content');
+      container.innerHTML = '';
+
+      data.data_mp4.forEach((item, index) => {
+        const videoId = "tcplayer-container-" + index;
+        const block = document.createElement('div');
+        block.className = 'video-block';
+        block.innerHTML = `
+          <span class="video-title" data-index="${index}">${index + 1}. ${item.title}</span>
+          <video id="${videoId}" class="tcplayer-container" preload="auto" playsinline webkit-playsinline></video>
+          <button class="jump-btn">${data.btn_text}</button>
+        `;
+        container.appendChild(block);
+
+        const jumpBtn = block.querySelector('.jump-btn');
+        jumpBtn.onclick = () => window.location.href = data.btn_link;
+
+        setTimeout(() => {
+          const player = TCPlayer(videoId, { reportable: false });
+          player.src(item.url);
+          player.pause();
+          players[index] = player;
+        }, 0);
+      });
+
+      document.querySelectorAll('.video-title').forEach(titleElem => {
+        titleElem.addEventListener('click', function () {
+          const index = parseInt(this.getAttribute('data-index'));
+          if (currentPlayingIndex === index) return;
+
+          if (currentPlayingIndex !== null) {
+            const prevVideoElem = document.getElementById("tcplayer-container-" + currentPlayingIndex);
+            if (prevVideoElem) prevVideoElem.style.display = 'none';
+            const prevBlock = prevVideoElem?.parentElement;
+            prevBlock?.querySelector('.jump-btn')?.style.setProperty('display', 'none');
+            players[currentPlayingIndex]?.pause();
+          }
+
+          const currentVideoElem = document.getElementById("tcplayer-container-" + index);
+          currentVideoElem.style.display = 'block';
+          const currentBlock = this.parentElement;
+          currentBlock.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          currentBlock.querySelector('.jump-btn').style.display = 'block';
+          players[index]?.play();
+          currentPlayingIndex = index;
+        });
+      });
+    }
+
+    loadVideos();
+  </script>
+</body>
+</html>
